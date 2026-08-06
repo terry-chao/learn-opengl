@@ -28,10 +28,14 @@ x86/
 [Aa][Rr][Mm]64/
 bld/
 [Bb]in/
+bin-int/
 [Oo]bj/
 [Oo]ut/
 [Ll]og/
 [Ll]ogs/
+
+# Leftover Premake output (safe to delete if present)
+build/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
