@@ -30,6 +30,6 @@ msbuild ThatGame.sln /p:Configuration=Debug /p:Platform=x64
 
 ## 运行效果
 
-橙色矩形，青灰背景；按 `Esc` 退出。
+橙色三角形，青灰背景；按 `Esc` 退出。
 
 新增源文件时：在 VS 解决方案资源管理器中右键对应筛选器 → 添加 → 现有项。

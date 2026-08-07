@@ -1,8 +1,8 @@
-#include "sandbox_app.h"
+#include "application.h"
 
 int main()
 {
-    sandbox_app app;
+    application app;
     app.run();
     return 0;
 }

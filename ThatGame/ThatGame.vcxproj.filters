@@ -33,9 +33,6 @@
     <ClCompile Include="src\core\window.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\sandbox_app.cpp">
-      <Filter>src\core</Filter>
-    </ClCompile>
     <ClCompile Include="src\input\keyboard.cpp">
       <Filter>src\input</Filter>
     </ClCompile>
@@ -66,9 +63,6 @@
       <Filter>src\core</Filter>
     </ClInclude>
     <ClInclude Include="src\core\logging.h">
-      <Filter>src\core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\sandbox_app.h">
       <Filter>src\core</Filter>
     </ClInclude>
     <ClInclude Include="src\core\window.h">
