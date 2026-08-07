@@ -21,78 +21,78 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\core\main.cpp">
+    <ClCompile Include="src\core\main.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\application.cpp">
+    <ClCompile Include="src\core\application.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\logging.cpp">
+    <ClCompile Include="src\core\logging.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\window.cpp">
+    <ClCompile Include="src\core\window.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\sandbox_app.cpp">
+    <ClCompile Include="src\core\sandbox_app.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\input\keyboard.cpp">
+    <ClCompile Include="src\input\keyboard.cpp">
       <Filter>src\input</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\input\mouse.cpp">
+    <ClCompile Include="src\input\mouse.cpp">
       <Filter>src\input</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\rendering\gl_buffer.cpp">
+    <ClCompile Include="src\rendering\gl_buffer.cpp">
       <Filter>src\rendering</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\rendering\vertex_array.cpp">
+    <ClCompile Include="src\rendering\vertex_array.cpp">
       <Filter>src\rendering</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\rendering\shader.cpp">
+    <ClCompile Include="src\rendering\shader.cpp">
       <Filter>src\rendering</Filter>
     </ClCompile>
-    <ClCompile Include="..\vendor\Glad\src\glad.c">
+    <ClCompile Include="vendor\Glad\src\glad.c">
       <Filter>vendor\Glad</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\core\application.h">
+    <ClInclude Include="src\core\application.h">
       <Filter>src\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\core\asserts.h">
+    <ClInclude Include="src\core\asserts.h">
       <Filter>src\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\core\defines.h">
+    <ClInclude Include="src\core\defines.h">
       <Filter>src\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\core\logging.h">
+    <ClInclude Include="src\core\logging.h">
       <Filter>src\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\core\sandbox_app.h">
+    <ClInclude Include="src\core\sandbox_app.h">
       <Filter>src\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\core\window.h">
+    <ClInclude Include="src\core\window.h">
       <Filter>src\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\input\keyboard.h">
+    <ClInclude Include="src\input\keyboard.h">
       <Filter>src\input</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\input\mouse.h">
+    <ClInclude Include="src\input\mouse.h">
       <Filter>src\input</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\rendering\gl_base_element.h">
+    <ClInclude Include="src\rendering\gl_base_element.h">
       <Filter>src\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\rendering\gl_buffer.h">
+    <ClInclude Include="src\rendering\gl_buffer.h">
       <Filter>src\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\rendering\render_commands.h">
+    <ClInclude Include="src\rendering\render_commands.h">
       <Filter>src\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\rendering\shader.h">
+    <ClInclude Include="src\rendering\shader.h">
       <Filter>src\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\rendering\vertex_array.h">
+    <ClInclude Include="src\rendering\vertex_array.h">
       <Filter>src\rendering</Filter>
     </ClInclude>
   </ItemGroup>

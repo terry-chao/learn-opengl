@@ -1,30 +1,31 @@
-# Learn OpenGL
+# ThatGame
 
 Visual Studio 解决方案工程（GLFW + Glad）。
 
 ## 目录结构
 
 ```
-learn-opengl.sln
-learn-opengl/
-  learn-opengl.vcxproj
-src/
-  core/
-  input/
-  rendering/
-vendor/
-  Glad/
-  GLFW/
+ThatGame.sln
+ThatGame/
+  ThatGame.vcxproj
+  src/
+    core/
+    input/
+    rendering/
+  assets/
+  vendor/
+    Glad/
+    GLFW/
 ```
 
 ## 构建
 
-用 Visual Studio 打开 `learn-opengl.sln`，选 **Debug | x64**，生成并运行。
+用 Visual Studio 打开 `ThatGame.sln`，选 **Debug | x64**，生成并运行。
 
 或命令行：
 
 ```bat
-msbuild learn-opengl.sln /p:Configuration=Debug /p:Platform=x64
+msbuild ThatGame.sln /p:Configuration=Debug /p:Platform=x64
 ```
 
 ## 运行效果

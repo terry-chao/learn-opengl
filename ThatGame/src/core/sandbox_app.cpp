@@ -33,25 +33,7 @@ void sandbox_app::on_init()
     m_vao->set_vertex_layout_attrib(0, 3, 3 * sizeof(f32), reinterpret_cast<const void*>(0));
     m_vao->unbind();
 
-    const std::string vertex_src = R"(
-        #version 330 core
-        layout (location = 0) in vec3 a_position;
-        void main()
-        {
-            gl_Position = vec4(a_position, 1.0);
-        }
-    )";
-
-    const std::string fragment_src = R"(
-        #version 330 core
-        out vec4 frag_color;
-        void main()
-        {
-            frag_color = vec4(1.0, 0.5, 0.2, 1.0);
-        }
-    )";
-
-    m_shader = std::make_shared<shader>(vertex_src, fragment_src);
+    m_shader = std::make_shared<shader>("assets/shaders/basic.vert", "assets/shaders/basic.frag");
 }
 
 void sandbox_app::on_render()
