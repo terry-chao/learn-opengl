@@ -2,6 +2,9 @@
 #include "../core/logging.h"
 #include "../core/asserts.h"
 
+#include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -41,6 +44,46 @@ void shader::delete_id()
         glDeleteProgram(m_id);
         m_id = 0;
     }
+}
+
+void shader::set_mat4(const std::string& name, const glm::mat4& value)
+{
+    glUniformMatrix4fv(get_uniform_location(name), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void shader::set_mat3(const std::string& name, const glm::mat3& value)
+{
+    glUniformMatrix3fv(get_uniform_location(name), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void shader::set_mat2(const std::string& name, const glm::mat2& value)
+{
+    glUniformMatrix2fv(get_uniform_location(name), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void shader::set_vec4(const std::string& name, const glm::vec4& value)
+{
+    glUniform4fv(get_uniform_location(name), 1, glm::value_ptr(value));
+}
+
+void shader::set_vec3(const std::string& name, const glm::vec3& value)
+{
+    glUniform3fv(get_uniform_location(name), 1, glm::value_ptr(value));
+}
+
+void shader::set_vec2(const std::string& name, const glm::vec2& value)
+{
+    glUniform2fv(get_uniform_location(name), 1, glm::value_ptr(value));
+}
+
+void shader::set_int(const std::string& name, i32 value)
+{
+    glUniform1i(get_uniform_location(name), value);
+}
+
+void shader::set_float(const std::string& name, f32 value)
+{
+    glUniform1f(get_uniform_location(name), value);
 }
 
 std::string shader::get_file_content(const std::string& filepath)
@@ -100,4 +143,12 @@ void shader::link(u32 v_shader, u32 f_shader)
 
     glDeleteShader(v_shader);
     glDeleteShader(f_shader);
+}
+
+i32 shader::get_uniform_location(const std::string& name) const
+{
+    const i32 location = glGetUniformLocation(m_id, name.c_str());
+    if (location == -1)
+        LOG_ERROR("Uniform '{0}' not found", name);
+    return location;
 }

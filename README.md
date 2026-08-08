@@ -1,6 +1,6 @@
 # ThatGame
 
-Visual Studio 解决方案工程（GLFW + Glad）。
+Visual Studio 解决方案工程（GLFW + Glad + stb_image + glm）。
 
 ## 目录结构
 
@@ -16,6 +16,8 @@ ThatGame/
   vendor/
     Glad/
     GLFW/
+    stb/
+    glm/
 ```
 
 ## 构建

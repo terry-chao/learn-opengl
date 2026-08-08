@@ -1,5 +1,6 @@
-#pragma once
+﻿#pragma once
 
+#include <glad/glad.h>
 #include "../core/defines.h"
 
 class gl_base_element
@@ -7,9 +8,9 @@ class gl_base_element
 public:
     virtual ~gl_base_element() = default;
 
-    virtual void bind() = 0;
-    virtual void unbind() = 0;
-    virtual void delete_id() = 0;
+    virtual void bind() {};
+    virtual void unbind() {};
+    virtual void delete_id() {};
 
     u32 get_id() const { return m_id; }
 

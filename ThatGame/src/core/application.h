@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "window.h"
 #include "defines.h"
@@ -7,6 +7,7 @@
 #include "../rendering/gl_buffer.h"
 #include "../rendering/shader.h"
 #include "../rendering/render_commands.h"
+#include "../rendering/texture.h"
 
 #include <memory>
 #include <string>
@@ -34,6 +35,7 @@ private:
     std::shared_ptr<window> m_window;
     std::shared_ptr<vertex_array> m_vertex_array;
     std::shared_ptr<shader> m_shader;
+    std::shared_ptr<texture> m_texture;
 
     std::string m_title = "ThatGame";
     u32 m_width = 1280;

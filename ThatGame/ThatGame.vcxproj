@@ -61,7 +61,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)vendor\Glad\include;$(ProjectDir)vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)vendor\Glad\include;$(ProjectDir)vendor\GLFW\include;$(ProjectDir)vendor\stb;$(ProjectDir)vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -80,7 +80,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)vendor\Glad\include;$(ProjectDir)vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)vendor\Glad\include;$(ProjectDir)vendor\GLFW\include;$(ProjectDir)vendor\stb;$(ProjectDir)vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -99,9 +99,11 @@
     <ClCompile Include="src\input\keyboard.cpp" />
     <ClCompile Include="src\input\mouse.cpp" />
     <ClCompile Include="src\rendering\gl_buffer.cpp" />
+    <ClCompile Include="src\rendering\texture.cpp" />
     <ClCompile Include="src\rendering\vertex_array.cpp" />
     <ClCompile Include="src\rendering\shader.cpp" />
     <ClCompile Include="vendor\Glad\src\glad.c" />
+    <ClCompile Include="vendor\stb\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\application.h" />
@@ -115,11 +117,16 @@
     <ClInclude Include="src\rendering\gl_buffer.h" />
     <ClInclude Include="src\rendering\render_commands.h" />
     <ClInclude Include="src\rendering\shader.h" />
+    <ClInclude Include="src\rendering\texture.h" />
     <ClInclude Include="src\rendering\vertex_array.h" />
+    <ClInclude Include="vendor\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\default_fragment.glsl" />
     <None Include="assets\shaders\default_vertex.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\textures\grass.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
