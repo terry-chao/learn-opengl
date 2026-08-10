@@ -159,8 +159,12 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Disk.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="render.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="vendor\minifb\src\MiniFB_common.c" />
     <ClCompile Include="vendor\minifb\src\MiniFB_cpp.cpp" />
     <ClCompile Include="vendor\minifb\src\MiniFB_internal.c" />
@@ -168,8 +172,13 @@
     <ClCompile Include="vendor\minifb\src\windows\WinMiniFB.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Common.h" />
-    <ClInclude Include="render.h" />
+    <ClInclude Include="Disk.h" />
+    <ClInclude Include="Primitive.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Triangle.h" />
     <ClInclude Include="vendor\minifb\include\MiniFB.h" />
     <ClInclude Include="vendor\minifb\include\MiniFB_cpp.h" />
     <ClInclude Include="vendor\minifb\include\MiniFB_enums.h" />

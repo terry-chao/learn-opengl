@@ -10,4 +10,19 @@ using Vector2i = glm::ivec2;
 using Vector3i = glm::ivec3;
 using Vector4i = glm::ivec4;
 
+using Matrix4f = glm::mat4;
+
 using Color = Vector3f;
+
+struct Ray
+{
+    Vector3f origin{0.0f};
+    Vector3f direction{0.0f, 0.0f, 1.0f};
+};
+
+struct Intersection
+{
+    float t = 0.0f;
+    Vector3f position{0.0f};
+    Vector3f normal{0.0f, 0.0f, 1.0f};
+};

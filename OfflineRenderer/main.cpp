@@ -1,8 +1,8 @@
-﻿#include "render.h"
+#include "Renderer.h"
 
 int main()
 {
-    render app;
-    app.run();
+    Renderer app;
+    app.Run();
     return 0;
 }
