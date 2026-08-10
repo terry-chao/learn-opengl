@@ -168,6 +168,7 @@
     <ClCompile Include="vendor\minifb\src\windows\WinMiniFB.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="vendor\minifb\include\MiniFB.h" />
     <ClInclude Include="vendor\minifb\include\MiniFB_cpp.h" />

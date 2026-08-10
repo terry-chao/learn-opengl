@@ -2,7 +2,6 @@
 
 #include <atomic>
 #include <cstdint>
-#include <mutex>
 #include <string>
 #include <thread>
 #include <vector>
@@ -26,8 +25,6 @@ private:
     uint32_t m_height = 600;
 
     std::vector<uint32_t> m_buffer;
-    std::vector<uint32_t> m_back_buffer;
-    std::mutex m_mutex;
 
     std::atomic<bool> m_running{false};
     std::thread m_worker;
