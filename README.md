@@ -5,7 +5,7 @@ Visual Studio 解决方案工程（GLFW + Glad + stb_image + glm）。
 ## 目录结构
 
 ```
-ThatGame.sln
+learn-opengl.sln
 ThatGame/
   ThatGame.vcxproj
   src/
@@ -22,12 +22,12 @@ ThatGame/
 
 ## 构建
 
-用 Visual Studio 打开 `ThatGame.sln`，选 **Debug | x64**，生成并运行。
+用 Visual Studio 打开 `learn-opengl.sln`，选 **Debug | x64**，生成并运行。
 
 或命令行：
 
 ```bat
-msbuild ThatGame.sln /p:Configuration=Debug /p:Platform=x64
+msbuild learn-opengl.sln /p:Configuration=Debug /p:Platform=x64
 ```
 
 ## 运行效果
