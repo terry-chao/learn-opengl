@@ -69,6 +69,9 @@
     <ClCompile Include="vendor\minifb\src\windows\WinMiniFB.c">
       <Filter>vendor\minifb\src\windows</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -122,5 +125,13 @@
     <ClInclude Include="vendor\minifb\src\windows\WindowData_Win.h">
       <Filter>vendor\minifb\src\windows</Filter>
     </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="assets\scene.xml">
+      <Filter>资源文件</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

@@ -1,12 +1,10 @@
 ﻿#pragma once
 
-#include "Camera.h"
 #include "Common.h"
-#include "SceneObject.h"
+#include "Scene.h"
 
 #include <atomic>
 #include <cstdint>
-#include <memory>
 #include <string>
 #include <thread>
 #include <vector>
@@ -30,14 +28,11 @@ private:
     Color RenderPixel(int x, int y);
     Color RenderSubPixel(float x, float y);
 
-    std::shared_ptr<SceneObject> AddSceneObject(const Vector3f& position, const Vector3f& euler, float scale);
-
     std::string mTitle = "OfflineRenderer";
     int mViewportWidth = 800;
     int mViewportHeight = 600;
 
-    Camera mCamera;
-    std::vector<std::shared_ptr<SceneObject>> mSceneObjects;
+    Scene mScene;
 
     std::vector<uint32_t> mBuffer;
     std::atomic<int> mCurrentPixelIndex{0};

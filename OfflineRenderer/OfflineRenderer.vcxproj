@@ -164,6 +164,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Triangle.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Disk.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Triangle.h" />
@@ -191,6 +193,9 @@
     <ClInclude Include="vendor\minifb\src\MiniFB_internal.h" />
     <ClInclude Include="vendor\minifb\src\WindowData.h" />
     <ClInclude Include="vendor\minifb\src\windows\WindowData_Win.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="assets\scene.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

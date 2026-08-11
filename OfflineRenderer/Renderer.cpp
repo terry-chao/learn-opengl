@@ -1,65 +1,24 @@
 ﻿#include "Renderer.h"
 
-#include "Disk.h"
-#include "Sphere.h"
-#include "Triangle.h"
-
 #include <MiniFB.h>
 
-#include <glm/gtc/constants.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/random.hpp>
 
 #include <cmath>
 #include <iostream>
-#include <limits>
+#include <memory>
 
 Renderer::Renderer()
 {
-    const Vector3f noRotation(0.0f);
+    Scene* scene = Scene::LoadFromXML("assets/scene.xml");
+    if (!scene)
+    {
+        std::cerr << "Failed to load assets/scene.xml, using empty scene\n";
+        return;
+    }
 
-    std::shared_ptr<SceneObject> floor = AddSceneObject(Vector3f(0.0f, -1.2f, 4.0f), noRotation, 1.0f);
-    floor->AddPrimitive(std::make_unique<Disk>(floor.get(), Vector3f(0.0f, 1.0f, 0.0f), 2.5f));
-
-    std::shared_ptr<SceneObject> sphereA = AddSceneObject(Vector3f(-1.2f, 0.0f, 4.0f), noRotation, 1.0f);
-    sphereA->AddPrimitive(std::make_unique<Sphere>(sphereA.get(), 0.7f));
-
-    std::shared_ptr<SceneObject> sphereB = AddSceneObject(Vector3f(1.2f, 0.0f, 4.5f), noRotation, 1.0f);
-    sphereB->AddPrimitive(std::make_unique<Sphere>(sphereB.get(), 0.8f));
-
-    std::shared_ptr<SceneObject> sphereC = AddSceneObject(Vector3f(0.0f, 1.0f, 5.0f), noRotation, 1.0f);
-    sphereC->AddPrimitive(std::make_unique<Sphere>(sphereC.get(), 0.5f));
-
-    std::shared_ptr<SceneObject> triA = AddSceneObject(Vector3f(0.0f, 0.0f, 0.0f), noRotation, 1.0f);
-    triA->AddPrimitive(std::make_unique<Triangle>(
-        triA.get(),
-        Vector3f(-0.5f, -1.0f, 3.2f),
-        Vector3f(0.5f, -1.0f, 3.2f),
-        Vector3f(0.0f, 0.2f, 3.0f)));
-
-    std::shared_ptr<SceneObject> triB = AddSceneObject(Vector3f(0.0f, 0.0f, 0.0f), noRotation, 1.0f);
-    triB->AddPrimitive(std::make_unique<Triangle>(
-        triB.get(),
-        Vector3f(-2.0f, -1.0f, 5.0f),
-        Vector3f(-1.0f, -1.0f, 5.5f),
-        Vector3f(-1.5f, 0.5f, 5.0f)));
-
-    std::shared_ptr<SceneObject> triC = AddSceneObject(Vector3f(0.0f, 0.0f, 0.0f), noRotation, 1.0f);
-    triC->AddPrimitive(std::make_unique<Triangle>(
-        triC.get(),
-        Vector3f(1.0f, -1.0f, 3.5f),
-        Vector3f(2.0f, -1.0f, 4.0f),
-        Vector3f(1.5f, 0.8f, 3.8f)));
-
-    mCamera.Initialize(
-        Vector3f(0.0f, 0.0f, 0.0f),
-        Vector3f(0.0f, 0.0f, 1.0f),
-        Vector3f(0.0f, 1.0f, 0.0f),
-        glm::radians(60.0f),
-        0.1f,
-        100.0f,
-        mViewportWidth,
-        mViewportHeight);
+    mScene = std::move(*scene);
+    delete scene;
 }
 
 Renderer::~Renderer()
@@ -69,12 +28,6 @@ Renderer::~Renderer()
     {
         mWorker.join();
     }
-}
-
-std::shared_ptr<SceneObject> Renderer::AddSceneObject(const Vector3f& position, const Vector3f& euler, float scale)
-{
-    mSceneObjects.push_back(std::make_shared<SceneObject>(position, euler, scale));
-    return mSceneObjects.back();
 }
 
 Color Renderer::RenderPixel(int x, int y)
@@ -93,28 +46,16 @@ Color Renderer::RenderPixel(int x, int y)
 
 Color Renderer::RenderSubPixel(float x, float y)
 {
-    Ray ray = mCamera.GetRay(x, y);
-    Intersection closest;
-    closest.t = std::numeric_limits<float>::infinity();
-    bool hit = false;
+    Ray ray = mScene.GetCamera().GetRay(x, y);
+    Intersection isect;
 
-    for (const auto& sceneObject : mSceneObjects)
-    {
-        Intersection isect;
-        if (sceneObject->Intersect(ray, isect) && isect.t < closest.t)
-        {
-            closest = isect;
-            hit = true;
-        }
-    }
-
-    if (!hit)
+    if (!mScene.Intersect(ray, isect))
     {
         return Color(0, 0, 0);
     }
 
     // 将法线向量映射到[0, 1]范围内，作为颜色输出
-    return closest.normal * 0.5f + 0.5f;
+    return isect.normal * 0.5f + 0.5f;
 }
 
 void Renderer::RunRenderThread()

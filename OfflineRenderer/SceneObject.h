@@ -19,6 +19,9 @@ public:
     const Matrix4f& GetObjectToWorld() const { return mObjectToWorld; }
     const Matrix4f& GetWorldToObject() const { return mWorldToObject; }
 
+    template<typename T, typename... Args>
+    T* CreatePrimitive(Args&&... args);
+
     void AddPrimitive(std::unique_ptr<Primitive> primitive);
     const std::vector<std::unique_ptr<Primitive>>& GetPrimitives() const { return mPrimitives; }
 
@@ -27,3 +30,13 @@ private:
     Matrix4f mWorldToObject{1.0f};
     std::vector<std::unique_ptr<Primitive>> mPrimitives;
 };
+
+template<typename T, typename... Args>
+inline T* SceneObject::CreatePrimitive(Args&&... args)
+{
+    // 所有权交给 mPrimitives；返回的裸指针只是非拥有的观察指针，方便调用方继续配置
+    auto primitive = std::make_unique<T>(this, std::forward<Args>(args)...);
+    T* raw = primitive.get();
+    mPrimitives.push_back(std::move(primitive));
+    return raw;
+}
