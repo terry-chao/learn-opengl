@@ -64,7 +64,18 @@ std::string ReadFileText(const std::string& filename)
 
     std::ostringstream ss;
     ss << file.rdbuf();
-    return ss.str();
+    std::string text = ss.str();
+
+    // 跳过 UTF-8 BOM，避免 <?xml> / <Scene> 解析失败
+    if (text.size() >= 3
+        && static_cast<unsigned char>(text[0]) == 0xEF
+        && static_cast<unsigned char>(text[1]) == 0xBB
+        && static_cast<unsigned char>(text[2]) == 0xBF)
+    {
+        text.erase(0, 3);
+    }
+
+    return text;
 }
 
 std::string StripXmlComments(std::string xml)

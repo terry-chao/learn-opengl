@@ -10,10 +10,10 @@
 
 Renderer::Renderer()
 {
-    Scene* scene = Scene::LoadFromXML("assets/scene.xml");
+    Scene* scene = Scene::LoadFromXML("assets/scene02.xml");
     if (!scene)
     {
-        std::cerr << "Failed to load assets/scene.xml, using empty scene\n";
+        std::cerr << "Failed to load assets/scene02.xml, using empty scene\n";
         return;
     }
 
