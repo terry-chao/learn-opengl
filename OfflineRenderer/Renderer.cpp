@@ -8,6 +8,20 @@
 #include <random>
 
 #include "Common.h"
+#include "Material.h"
+
+namespace
+{
+// 以法线为局部 +Z 轴，构造正交坐标系（列向量为局部 x/y/z 在世界中的方向）
+Matrix3f MakeCoordinateSystem(const Vector3f& normal)
+{
+    const Vector3f n = glm::normalize(normal);
+    const Vector3f up = (std::abs(n.y) < 0.999f) ? Vector3f(0.0f, 1.0f, 0.0f) : Vector3f(1.0f, 0.0f, 0.0f);
+    const Vector3f t = glm::normalize(glm::cross(up, n));
+    const Vector3f b = glm::cross(n, t);
+    return Matrix3f(t, b, n);
+}
+} // namespace
 
 Renderer::Renderer()
 {
@@ -36,7 +50,7 @@ Color Renderer::GetIrradiance(const Ray& ray)
 
     Color E(0, 0, 0);
 
-    // E(p)
+    // E(p) = Σ Li * cosθ * V
     for (auto& pLight : mScene.GetLights())
     {
         Vector3f sourcePos;
@@ -58,6 +72,46 @@ Color Renderer::GetIrradiance(const Ray& ray)
     }
 
     return E;
+}
+
+Color Renderer::GetRadiance(const Ray& ray)
+{
+    Intersection isect;
+    SceneObject* pSceneObject = mScene.Intersect(ray, isect);
+    if (pSceneObject == nullptr)
+        return Color(0, 0, 0);
+
+    const Material* pMaterial = pSceneObject->GetMaterial();
+    Color Lo(0, 0, 0);
+
+    Matrix3f localToWorld = MakeCoordinateSystem(isect.normal);
+    Matrix3f worldToLocal = glm::transpose(localToWorld);
+
+    Vector3f wo = worldToLocal * (-ray.d); // 出射方向，转换到局部坐标系
+
+    for (const auto& pLight : mScene.GetLights())
+    {
+        Vector3f sourcePos;
+        Color L = pLight->GetRadiance(isect.position, sourcePos);
+
+        // 求shadowRay
+        Ray shadowRay;
+        shadowRay.o = isect.position;
+        shadowRay.d = glm::normalize(sourcePos - isect.position);
+        shadowRay.mint = 1e-3f;
+        shadowRay.maxt = glm::length(sourcePos - isect.position);
+
+        Intersection shadow_isect;
+        if (mScene.Intersect(shadowRay, shadow_isect)) // 如果shadowRay与场景中的物体相交，说明该点被遮挡了
+            continue;
+
+        Vector3f wi = worldToLocal * shadowRay.d; // 入射方向，转换到局部坐标系
+        float cosTheta = glm::dot(isect.normal, shadowRay.d);
+        Color brdf = pMaterial->BRDF(wo, wi);
+        Lo += brdf * L * glm::max(cosTheta, 0.0f);
+    }
+
+    return Lo;
 }
 
 void Renderer::JoinWorkers()

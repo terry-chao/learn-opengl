@@ -18,11 +18,18 @@ SceneObject::SceneObject(const Vector3f& position, const Vector3f& euler, float 
 {
     mObjectToWorld = MakeWorldTransform(position, euler, scale);
     mWorldToObject = glm::inverse(mObjectToWorld);
+    // 默认白色兰伯特材质
+    CreateMaterial<LambertMaterial>(Color(1.0f, 1.0f, 1.0f));
 }
 
 void SceneObject::AddPrimitive(std::unique_ptr<Primitive> primitive)
 {
     mPrimitives.push_back(std::move(primitive));
+}
+
+void SceneObject::SetMaterial(std::unique_ptr<Material> material)
+{
+    mMaterial = std::move(material);
 }
 
 bool SceneObject::Intersect(const Ray& ray, Intersection& isect) const

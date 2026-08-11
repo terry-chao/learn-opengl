@@ -72,6 +72,12 @@
     <ClCompile Include="Scene.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -128,12 +134,21 @@
     <ClInclude Include="Scene.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="assets\scene.xml">
       <Filter>资源文件</Filter>
     </Xml>
     <Xml Include="assets\scene02.xml">
+      <Filter>资源文件</Filter>
+    </Xml>
+    <Xml Include="assets\scene07.xml">
       <Filter>资源文件</Filter>
     </Xml>
   </ItemGroup>

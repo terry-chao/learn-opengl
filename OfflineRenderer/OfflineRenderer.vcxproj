@@ -163,6 +163,7 @@
     <ClCompile Include="Disk.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Disk.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />
@@ -199,6 +201,7 @@
   <ItemGroup>
     <Xml Include="assets\scene.xml" />
     <Xml Include="assets\scene02.xml" />
+    <Xml Include="assets\scene07.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

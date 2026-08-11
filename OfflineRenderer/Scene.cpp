@@ -300,6 +300,15 @@ void LoadLights(Scene* scene, const XmlElement& lightsElement)
         }
     }
 }
+
+void LoadMaterial(SceneObject* sceneObject, const XmlElement& materialElement)
+{
+    if (const XmlElement* lambert = materialElement.Child("Lambert"))
+    {
+        const Color albedo = ParseVector3(lambert->ChildText("Albedo", "1, 1, 1"));
+        sceneObject->CreateMaterial<LambertMaterial>(albedo);
+    }
+}
 } // namespace
 
 Scene* Scene::LoadFromXML(const std::string& filename)
@@ -364,6 +373,10 @@ Scene* Scene::LoadFromXML(const std::string& filename)
             }
 
             SceneObject* sceneObject = scene->CreateSceneObject(position, rotation, scale);
+            if (const XmlElement* material = objectElement->Child("Material"))
+            {
+                LoadMaterial(sceneObject, *material);
+            }
             if (const XmlElement* primitives = objectElement->Child("Primitives"))
             {
                 LoadPrimitives(sceneObject, *primitives);
@@ -400,6 +413,7 @@ SceneObject* Scene::Intersect(Ray ray, Intersection& isect) const
             && candidate.t < ray.maxt)
         {
             isect = candidate;
+            isect.material = sceneObject->GetMaterial();
             ray.maxt = isect.t;
             hitObject = sceneObject.get();
         }

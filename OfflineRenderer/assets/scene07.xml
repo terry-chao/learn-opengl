@@ -16,6 +16,11 @@
 				<Rotation>0, 0, 0</Rotation>
 				<Scale>1</Scale>
 			</Transform>
+			<Material>
+				<Lambert>
+					<Albedo>0.9, 0.9, 0.9</Albedo>
+				</Lambert>
+			</Material>
 			<Primitives>
 				<Sphere>
 					<Radius>0.3</Radius>
@@ -30,6 +35,11 @@
 				<Rotation>0, 0, 0</Rotation>
 				<Scale>1</Scale>
 			</Transform>
+			<Material>
+				<Lambert>
+					<Albedo>0.9, 0.9, 0.9</Albedo>
+				</Lambert>
+			</Material>
 			<Primitives>
 				<Sphere>
 					<Radius>0.3</Radius>
@@ -44,6 +54,11 @@
 				<Rotation>-90, 0, 0</Rotation>
 				<Scale>1</Scale>
 			</Transform>
+			<Material>
+				<Lambert>
+					<Albedo>0.8, 0.8, 0.8</Albedo>
+				</Lambert>
+			</Material>
 			<Primitives>
 				<Triangle>
 					<Vertex>-1, -1, 0</Vertex>
@@ -65,6 +80,11 @@
 				<Rotation>90, 0, 0</Rotation>
 				<Scale>1</Scale>
 			</Transform>
+			<Material>
+				<Lambert>
+					<Albedo>0.8, 0.8, 0.8</Albedo>
+				</Lambert>
+			</Material>
 			<Primitives>
 				<Triangle>
 					<Vertex>-1, -1, 0</Vertex>
@@ -86,6 +106,11 @@
 				<Rotation>0, 90, 0</Rotation>
 				<Scale>1</Scale>
 			</Transform>
+			<Material>
+				<Lambert>
+					<Albedo>0.8, 0.1, 0.1</Albedo>
+				</Lambert>
+			</Material>
 			<Primitives>
 				<Triangle>
 					<Vertex>-1, -0.75, 0</Vertex>
@@ -107,6 +132,11 @@
 				<Rotation>0, -90, 0</Rotation>
 				<Scale>1</Scale>
 			</Transform>
+			<Material>
+				<Lambert>
+					<Albedo>0.1, 0.8, 0.1</Albedo>
+				</Lambert>
+			</Material>
 			<Primitives>
 				<Triangle>
 					<Vertex>-1, -0.75, 0</Vertex>
@@ -121,13 +151,18 @@
 			</Primitives>
 		</SceneObject>
 
-        <!-- back wall -->
+		<!-- back wall -->
 		<SceneObject>
 			<Transform>
 				<Position>0, 0.75, 1</Position>
 				<Rotation>180, 0, 0</Rotation>
 				<Scale>1</Scale>
 			</Transform>
+			<Material>
+				<Lambert>
+					<Albedo>0.8, 0.8, 0.8</Albedo>
+				</Lambert>
+			</Material>
 			<Primitives>
 				<Triangle>
 					<Vertex>-1, -0.75, 0</Vertex>
@@ -143,9 +178,9 @@
 		</SceneObject>
 
 	</SceneObjects>
-	
+
 	 <Lights>
-		
+
 		<!-- 平行光
 		 <DirectionalLight>
 			 <Direction>1, -2, 0.4</Direction>
@@ -153,20 +188,20 @@
 		 </DirectionalLight>
 		  -->
 
-        <!-- 点光源 -->
-        <PointLight>
+		<!-- 点光源 -->
+		<PointLight>
 			<Position>0, 1, 0</Position>
 			<Intensity>1, 1, 1</Intensity>
-            <Attenuations>1, 0, 0</Attenuations>
-        </PointLight>
-		 
-        <SpotLight>
+			<Attenuations>1, 0, 0</Attenuations>
+		</PointLight>
+
+		<SpotLight>
 			<Position>-0.8, 0.9, 0</Position>
 			<Direction>2, -1, 0</Direction>
-            <Intensity>1.2, 0.8, 0</Intensity>
-            <InnerAngle>10</InnerAngle>
-            <OuterAngle>60</OuterAngle>
-            <Attenuations>1, 0, 0</Attenuations>
-        </SpotLight>
+			<Intensity>1.2, 0.8, 0</Intensity>
+			<InnerAngle>10</InnerAngle>
+			<OuterAngle>60</OuterAngle>
+			<Attenuations>1, 0, 0</Attenuations>
+		</SpotLight>
 	 </Lights>
 </Scene>
