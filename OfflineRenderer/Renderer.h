@@ -24,6 +24,7 @@ public:
 
 private:
     void RunRenderThread();
+    void JoinWorkers();
 
     Color RenderPixel(int x, int y);
     Color RenderSubPixel(float x, float y);
@@ -38,5 +39,5 @@ private:
     std::atomic<int> mCurrentPixelIndex{0};
 
     std::atomic<bool> mRunning{false};
-    std::thread mWorker;
+    std::vector<std::thread> mWorkers;
 };
