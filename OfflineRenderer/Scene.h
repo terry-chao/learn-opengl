@@ -1,10 +1,12 @@
 ﻿#pragma once
 
 #include "Camera.h"
+#include "Light.h"
 #include "SceneObject.h"
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 class Scene
@@ -18,10 +20,22 @@ public:
 
     SceneObject* CreateSceneObject(const Vector3f& position, const Vector3f& euler, float scale);
 
+    template<typename T, typename... Args>
+    T* CreateLight(Args&&... args)
+    {
+        auto light = std::make_unique<T>(std::forward<Args>(args)...);
+        T* raw = light.get();
+        mLights.push_back(std::move(light));
+        return raw;
+    }
+
+    const std::vector<std::unique_ptr<Light>>& GetLights() const { return mLights; }
+
     // 返回命中的 SceneObject；未命中返回 nullptr。isect 写入最近交点信息。
     SceneObject* Intersect(Ray ray, Intersection& isect) const;
 
 private:
     Camera mCamera;
     std::vector<std::unique_ptr<SceneObject>> mSceneObjects;
+    std::vector<std::unique_ptr<Light>> mLights;
 };

@@ -18,9 +18,11 @@ using Color = Vector3f;
 
 struct Ray
 {
-    Vector3f origin{0.0f};
-    Vector3f direction{0.0f, 0.0f, 1.0f};
-    float maxt = 1e30f;
+    Vector3f o{0.0f};
+    Vector3f d{0.0f, 0.0f, 1.0f};
+
+    float mint = 0.0f;
+    float maxt = FLT_MAX;
 };
 
 struct Intersection

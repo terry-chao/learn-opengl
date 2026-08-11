@@ -7,9 +7,11 @@
 #include <memory>
 #include <random>
 
+#include "Common.h"
+
 Renderer::Renderer()
 {
-    Scene* scene = Scene::LoadFromXML("assets/scene02.xml");
+    Scene* scene = Scene::LoadFromXML("assets/scene07.xml");
     if (!scene)
     {
         std::cerr << "Failed to load assets/scene02.xml, using empty scene\n";
@@ -26,6 +28,38 @@ Renderer::~Renderer()
     JoinWorkers();
 }
 
+Color Renderer::GetIrradiance(const Ray& ray)
+{
+    Intersection isect;
+    if (!mScene.Intersect(ray, isect))
+        return Color(0, 0, 0);
+
+    Color E(0, 0, 0);
+
+    // E(p)
+    for (auto& pLight : mScene.GetLights())
+    {
+        Vector3f sourcePos;
+        Color L = pLight->GetRadiance(isect.position, sourcePos);
+
+        // 求shadowRay
+        Ray shadowRay;
+        shadowRay.o = isect.position;
+        shadowRay.d = glm::normalize(sourcePos - isect.position);
+        shadowRay.mint = 1e-3f;
+        shadowRay.maxt = glm::length(sourcePos - isect.position);
+
+        Intersection shadow_isect;
+        if (mScene.Intersect(shadowRay, shadow_isect)) // 如果shadowRay与场景中的物体相交，说明该点被遮挡了
+            continue;
+
+        float cosTheta = glm::dot(isect.normal, shadowRay.d);
+        E += L * glm::max(cosTheta, 0.0f);
+    }
+
+    return E;
+}
+
 void Renderer::JoinWorkers()
 {
     for (std::thread& worker : mWorkers)
@@ -40,33 +74,40 @@ void Renderer::JoinWorkers()
 
 Color Renderer::RenderPixel(int x, int y)
 {
-    // 每线程独立 RNG，避免 glm::linearRand 全局状态在多线程下竞争
+    // 每线程独立 RNG，避免依赖 glm::linearRand
     thread_local std::mt19937 rng{std::random_device{}()};
     std::uniform_real_distribution<float> dist(0.0f, 1.0f);
 
-    const int N = SamplePerPixel;
+    // SSAA
+    const int N = SamplePerPixel; // 每个像素采样的次数
     Color resultColor(0, 0, 0);
-    for (int i = 0; i < N; ++i)
+
+    for (int i = 0; i < N; i++)
     {
+        // (x, y) - (x+1, y+1)范围内随机采样一个点：
         float px = x + dist(rng);
         float py = y + dist(rng);
-        resultColor += RenderSubPixel(px, py) / static_cast<float>(N);
+
+        Color color = RenderSubPixel(px, py);
+        resultColor += (color / (float)N);
     }
-    return resultColor;
+
+    return resultColor; // 取平均值，得到最终颜色	
 }
 
 Color Renderer::RenderSubPixel(float x, float y)
 {
     Ray ray = mScene.GetCamera().GetRay(x, y);
-    Intersection isect;
+    //Intersection isect;
 
-    if (!mScene.Intersect(ray, isect))
-    {
-        return Color(0, 0, 0);
-    }
-
+    //if (!mScene.Intersect(ray, isect))
+    //{
+    //    return Color(0, 0, 0);
+    //}
     // 将法线向量映射到[0, 1]范围内，作为颜色输出
-    return isect.normal * 0.5f + 0.5f;
+    //return isect.normal * 0.5f + 0.5f;
+
+    return GetIrradiance(ray);
 }
 
 void Renderer::RunRenderThread()

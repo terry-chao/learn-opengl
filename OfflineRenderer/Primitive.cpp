@@ -1,4 +1,4 @@
-#include "Primitive.h"
+﻿#include "Primitive.h"
 
 #include "SceneObject.h"
 
@@ -16,8 +16,8 @@ Ray Primitive::TransformRayToObject(const Ray& worldRay) const
 
     const Matrix4f& worldToObject = m_pSceneObject->GetWorldToObject();
     Ray objectRay;
-    objectRay.origin = Vector3f(worldToObject * Vector4f(worldRay.origin, 1.0f));
-    objectRay.direction = Vector3f(worldToObject * Vector4f(worldRay.direction, 0.0f));
+    objectRay.o = Vector3f(worldToObject * Vector4f(worldRay.o, 1.0f));
+    objectRay.d = Vector3f(worldToObject * Vector4f(worldRay.d, 0.0f));
     return objectRay;
 }
 
@@ -33,5 +33,5 @@ void Primitive::TransformIntersectionToWorld(const Ray& worldRay, Intersection& 
 
     isect.position = Vector3f(objectToWorld * Vector4f(isect.position, 1.0f));
     isect.normal = glm::normalize(Vector3f(glm::transpose(worldToObject) * Vector4f(isect.normal, 0.0f)));
-    isect.t = glm::length(isect.position - worldRay.origin);
+    isect.t = glm::length(isect.position - worldRay.o);
 }

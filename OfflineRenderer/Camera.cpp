@@ -1,4 +1,4 @@
-#include "Camera.h"
+﻿#include "Camera.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -30,7 +30,7 @@ Ray Camera::GetRay(float x, float y) const
     const Vector3f dirWorld = glm::normalize(Vector3f(mInvView * Vector4f(dirView, 0.0f)));
 
     Ray ray;
-    ray.origin = mPosition;
-    ray.direction = dirWorld;
+    ray.o = mPosition;
+    ray.d = dirWorld;
     return ray;
 }

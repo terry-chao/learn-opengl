@@ -34,7 +34,10 @@ bool SceneObject::Intersect(const Ray& ray, Intersection& isect) const
     for (const auto& primitive : mPrimitives)
     {
         Intersection candidate;
-        if (primitive->Intersect(ray, candidate) && candidate.t < closest.t)
+        if (primitive->Intersect(ray, candidate)
+            && candidate.t >= ray.mint
+            && candidate.t < closest.t
+            && candidate.t < ray.maxt)
         {
             closest = candidate;
             hit = true;

@@ -12,9 +12,9 @@ bool Sphere::Intersect(const Ray& ray, Intersection& isect) const
 {
     const Ray localRay = TransformRayToObject(ray);
 
-    const Vector3f oc = localRay.origin;
-    const float a = glm::dot(localRay.direction, localRay.direction);
-    const float b = 2.0f * glm::dot(oc, localRay.direction);
+    const Vector3f oc = localRay.o;
+    const float a = glm::dot(localRay.d, localRay.d);
+    const float b = 2.0f * glm::dot(oc, localRay.d);
     const float c = glm::dot(oc, oc) - mRadius * mRadius;
     const float discriminant = b * b - 4.0f * a * c;
     if (discriminant < 0.0f)
@@ -34,7 +34,7 @@ bool Sphere::Intersect(const Ray& ray, Intersection& isect) const
     }
 
     isect.t = t;
-    isect.position = localRay.origin + t * localRay.direction;
+    isect.position = localRay.o + t * localRay.d;
     isect.normal = glm::normalize(isect.position);
     TransformIntersectionToWorld(ray, isect);
     return true;

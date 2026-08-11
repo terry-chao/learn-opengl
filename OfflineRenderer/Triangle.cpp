@@ -1,4 +1,4 @@
-#include "Triangle.h"
+﻿#include "Triangle.h"
 
 #include <cmath>
 
@@ -19,7 +19,7 @@ bool Triangle::Intersect(const Ray& ray, Intersection& isect) const
 
     const Vector3f e1 = mV1 - mV0;
     const Vector3f e2 = mV2 - mV0;
-    const Vector3f pvec = glm::cross(localRay.direction, e2);
+    const Vector3f pvec = glm::cross(localRay.d, e2);
     const float det = glm::dot(e1, pvec);
     if (std::abs(det) < epsilon)
     {
@@ -27,7 +27,7 @@ bool Triangle::Intersect(const Ray& ray, Intersection& isect) const
     }
 
     const float invDet = 1.0f / det;
-    const Vector3f tvec = localRay.origin - mV0;
+    const Vector3f tvec = localRay.o - mV0;
     const float u = glm::dot(tvec, pvec) * invDet;
     if (u < 0.0f || u > 1.0f)
     {
@@ -35,7 +35,7 @@ bool Triangle::Intersect(const Ray& ray, Intersection& isect) const
     }
 
     const Vector3f qvec = glm::cross(tvec, e1);
-    const float v = glm::dot(localRay.direction, qvec) * invDet;
+    const float v = glm::dot(localRay.d, qvec) * invDet;
     if (v < 0.0f || u + v > 1.0f)
     {
         return false;
@@ -48,7 +48,7 @@ bool Triangle::Intersect(const Ray& ray, Intersection& isect) const
     }
 
     isect.t = t;
-    isect.position = localRay.origin + t * localRay.direction;
+    isect.position = localRay.o + t * localRay.d;
     isect.normal = glm::normalize(glm::cross(e1, e2));
     TransformIntersectionToWorld(ray, isect);
     return true;

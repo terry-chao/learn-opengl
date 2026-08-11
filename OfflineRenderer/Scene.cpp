@@ -270,6 +270,36 @@ void LoadPrimitives(SceneObject* sceneObject, const XmlElement& primitivesElemen
         }
     }
 }
+
+void LoadLights(Scene* scene, const XmlElement& lightsElement)
+{
+    for (const XmlElement& child : lightsElement.children)
+    {
+        if (child.name == "DirectionalLight")
+        {
+            const Vector3f direction = ParseVector3(child.ChildText("Direction", "0, -1, 0"));
+            const Color radiance = ParseVector3(child.ChildText("Radiance", "1, 1, 1"));
+            scene->CreateLight<DirectionalLight>(direction, radiance);
+        }
+        else if (child.name == "PointLight")
+        {
+            const Vector3f position = ParseVector3(child.ChildText("Position", "0, 0, 0"));
+            const Color intensity = ParseVector3(child.ChildText("Intensity", "1, 1, 1"));
+            const Vector3f attenuations = ParseVector3(child.ChildText("Attenuations", "1, 0, 0"));
+            scene->CreateLight<PointLight>(position, intensity, attenuations);
+        }
+        else if (child.name == "SpotLight")
+        {
+            const Vector3f position = ParseVector3(child.ChildText("Position", "0, 0, 0"));
+            const Vector3f direction = ParseVector3(child.ChildText("Direction", "0, -1, 0"));
+            const Color intensity = ParseVector3(child.ChildText("Intensity", "1, 1, 1"));
+            const float innerAngle = glm::radians(ParseFloat(child.ChildText("InnerAngle", "10"), 10.0f));
+            const float outerAngle = glm::radians(ParseFloat(child.ChildText("OuterAngle", "60"), 60.0f));
+            const Vector3f attenuations = ParseVector3(child.ChildText("Attenuations", "1, 0, 0"));
+            scene->CreateLight<SpotLight>(position, direction, intensity, innerAngle, outerAngle, attenuations);
+        }
+    }
+}
 } // namespace
 
 Scene* Scene::LoadFromXML(const std::string& filename)
@@ -341,6 +371,11 @@ Scene* Scene::LoadFromXML(const std::string& filename)
         }
     }
 
+    if (const XmlElement* lightsElement = root.Child("Lights"))
+    {
+        LoadLights(scene, *lightsElement);
+    }
+
     return scene;
 }
 
@@ -359,7 +394,10 @@ SceneObject* Scene::Intersect(Ray ray, Intersection& isect) const
     for (const auto& sceneObject : mSceneObjects)
     {
         Intersection candidate;
-        if (sceneObject->Intersect(ray, candidate) && candidate.t < ray.maxt)
+        // 必须尊重 mint/maxt：阴影射线用 mint 避免自相交导致整图发黑
+        if (sceneObject->Intersect(ray, candidate)
+            && candidate.t >= ray.mint
+            && candidate.t < ray.maxt)
         {
             isect = candidate;
             ray.maxt = isect.t;
