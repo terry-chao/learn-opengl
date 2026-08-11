@@ -1,6 +1,8 @@
-#include "SceneObject.h"
+﻿#include "SceneObject.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+
+#include <limits>
 
 Matrix4f MakeWorldTransform(const Vector3f& position, const Vector3f& euler, float scale)
 {
@@ -16,4 +18,32 @@ SceneObject::SceneObject(const Vector3f& position, const Vector3f& euler, float 
 {
     mObjectToWorld = MakeWorldTransform(position, euler, scale);
     mWorldToObject = glm::inverse(mObjectToWorld);
+}
+
+void SceneObject::AddPrimitive(std::unique_ptr<Primitive> primitive)
+{
+    mPrimitives.push_back(std::move(primitive));
+}
+
+bool SceneObject::Intersect(const Ray& ray, Intersection& isect) const
+{
+    Intersection closest;
+    closest.t = std::numeric_limits<float>::infinity();
+    bool hit = false;
+
+    for (const auto& primitive : mPrimitives)
+    {
+        Intersection candidate;
+        if (primitive->Intersect(ray, candidate) && candidate.t < closest.t)
+        {
+            closest = candidate;
+            hit = true;
+        }
+    }
+
+    if (hit)
+    {
+        isect = closest;
+    }
+    return hit;
 }

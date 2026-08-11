@@ -1,4 +1,4 @@
-#include "Renderer.h"
+﻿#include "Renderer.h"
 
 #include "Disk.h"
 #include "Sphere.h"
@@ -14,6 +14,54 @@
 #include <iostream>
 #include <limits>
 
+Renderer::Renderer()
+{
+    const Vector3f noRotation(0.0f);
+
+    std::shared_ptr<SceneObject> floor = AddSceneObject(Vector3f(0.0f, -1.2f, 4.0f), noRotation, 1.0f);
+    floor->AddPrimitive(std::make_unique<Disk>(floor.get(), Vector3f(0.0f, 1.0f, 0.0f), 2.5f));
+
+    std::shared_ptr<SceneObject> sphereA = AddSceneObject(Vector3f(-1.2f, 0.0f, 4.0f), noRotation, 1.0f);
+    sphereA->AddPrimitive(std::make_unique<Sphere>(sphereA.get(), 0.7f));
+
+    std::shared_ptr<SceneObject> sphereB = AddSceneObject(Vector3f(1.2f, 0.0f, 4.5f), noRotation, 1.0f);
+    sphereB->AddPrimitive(std::make_unique<Sphere>(sphereB.get(), 0.8f));
+
+    std::shared_ptr<SceneObject> sphereC = AddSceneObject(Vector3f(0.0f, 1.0f, 5.0f), noRotation, 1.0f);
+    sphereC->AddPrimitive(std::make_unique<Sphere>(sphereC.get(), 0.5f));
+
+    std::shared_ptr<SceneObject> triA = AddSceneObject(Vector3f(0.0f, 0.0f, 0.0f), noRotation, 1.0f);
+    triA->AddPrimitive(std::make_unique<Triangle>(
+        triA.get(),
+        Vector3f(-0.5f, -1.0f, 3.2f),
+        Vector3f(0.5f, -1.0f, 3.2f),
+        Vector3f(0.0f, 0.2f, 3.0f)));
+
+    std::shared_ptr<SceneObject> triB = AddSceneObject(Vector3f(0.0f, 0.0f, 0.0f), noRotation, 1.0f);
+    triB->AddPrimitive(std::make_unique<Triangle>(
+        triB.get(),
+        Vector3f(-2.0f, -1.0f, 5.0f),
+        Vector3f(-1.0f, -1.0f, 5.5f),
+        Vector3f(-1.5f, 0.5f, 5.0f)));
+
+    std::shared_ptr<SceneObject> triC = AddSceneObject(Vector3f(0.0f, 0.0f, 0.0f), noRotation, 1.0f);
+    triC->AddPrimitive(std::make_unique<Triangle>(
+        triC.get(),
+        Vector3f(1.0f, -1.0f, 3.5f),
+        Vector3f(2.0f, -1.0f, 4.0f),
+        Vector3f(1.5f, 0.8f, 3.8f)));
+
+    mCamera.Initialize(
+        Vector3f(0.0f, 0.0f, 0.0f),
+        Vector3f(0.0f, 0.0f, 1.0f),
+        Vector3f(0.0f, 1.0f, 0.0f),
+        glm::radians(60.0f),
+        0.1f,
+        100.0f,
+        mViewportWidth,
+        mViewportHeight);
+}
+
 Renderer::~Renderer()
 {
     mRunning = false;
@@ -23,10 +71,10 @@ Renderer::~Renderer()
     }
 }
 
-SceneObject* Renderer::AddSceneObject(const Vector3f& position, const Vector3f& euler, float scale)
+std::shared_ptr<SceneObject> Renderer::AddSceneObject(const Vector3f& position, const Vector3f& euler, float scale)
 {
-    mSceneObjects.push_back(std::make_unique<SceneObject>(position, euler, scale));
-    return mSceneObjects.back().get();
+    mSceneObjects.push_back(std::make_shared<SceneObject>(position, euler, scale));
+    return mSceneObjects.back();
 }
 
 Color Renderer::RenderPixel(int x, int y)
@@ -50,10 +98,10 @@ Color Renderer::RenderSubPixel(float x, float y)
     closest.t = std::numeric_limits<float>::infinity();
     bool hit = false;
 
-    for (const auto& primitive : mPrimitives)
+    for (const auto& sceneObject : mSceneObjects)
     {
         Intersection isect;
-        if (primitive->Intersect(ray, isect) && isect.t < closest.t)
+        if (sceneObject->Intersect(ray, isect) && isect.t < closest.t)
         {
             closest = isect;
             hit = true;
@@ -94,54 +142,6 @@ void Renderer::RunRenderThread()
 
 void Renderer::Run()
 {
-    mSceneObjects.clear();
-    mPrimitives.clear();
-
-    const Vector3f noRotation(0.0f);
-
-    SceneObject* floor = AddSceneObject(Vector3f(0.0f, -1.2f, 4.0f), noRotation, 1.0f);
-    mPrimitives.push_back(std::make_unique<Disk>(floor, Vector3f(0.0f, 1.0f, 0.0f), 2.5f));
-
-    SceneObject* sphereA = AddSceneObject(Vector3f(-1.2f, 0.0f, 4.0f), noRotation, 1.0f);
-    mPrimitives.push_back(std::make_unique<Sphere>(sphereA, 0.7f));
-
-    SceneObject* sphereB = AddSceneObject(Vector3f(1.2f, 0.0f, 4.5f), noRotation, 1.0f);
-    mPrimitives.push_back(std::make_unique<Sphere>(sphereB, 0.8f));
-
-    SceneObject* sphereC = AddSceneObject(Vector3f(0.0f, 1.0f, 5.0f), noRotation, 1.0f);
-    mPrimitives.push_back(std::make_unique<Sphere>(sphereC, 0.5f));
-
-    SceneObject* triA = AddSceneObject(Vector3f(0.0f, 0.0f, 0.0f), noRotation, 1.0f);
-    mPrimitives.push_back(std::make_unique<Triangle>(
-        triA,
-        Vector3f(-0.5f, -1.0f, 3.2f),
-        Vector3f(0.5f, -1.0f, 3.2f),
-        Vector3f(0.0f, 0.2f, 3.0f)));
-
-    SceneObject* triB = AddSceneObject(Vector3f(0.0f, 0.0f, 0.0f), noRotation, 1.0f);
-    mPrimitives.push_back(std::make_unique<Triangle>(
-        triB,
-        Vector3f(-2.0f, -1.0f, 5.0f),
-        Vector3f(-1.0f, -1.0f, 5.5f),
-        Vector3f(-1.5f, 0.5f, 5.0f)));
-
-    SceneObject* triC = AddSceneObject(Vector3f(0.0f, 0.0f, 0.0f), noRotation, 1.0f);
-    mPrimitives.push_back(std::make_unique<Triangle>(
-        triC,
-        Vector3f(1.0f, -1.0f, 3.5f),
-        Vector3f(2.0f, -1.0f, 4.0f),
-        Vector3f(1.5f, 0.8f, 3.8f)));
-
-    mCamera.Initialize(
-        Vector3f(0.0f, 0.0f, 0.0f),
-        Vector3f(0.0f, 0.0f, 1.0f),
-        Vector3f(0.0f, 1.0f, 0.0f),
-        glm::radians(60.0f),
-        0.1f,
-        100.0f,
-        mViewportWidth,
-        mViewportHeight);
-
     mfb_window* window = mfb_open(mTitle.c_str(), static_cast<unsigned>(mViewportWidth), static_cast<unsigned>(mViewportHeight));
     if (!window)
     {

@@ -1,5 +1,7 @@
-#pragma once
+﻿#pragma once
 
+#include <vector>
+#include <memory>
 #include <glm/glm.hpp>
 
 using Vector2f = glm::vec2;

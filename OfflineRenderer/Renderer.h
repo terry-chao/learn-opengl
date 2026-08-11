@@ -1,8 +1,7 @@
-#pragma once
+﻿#pragma once
 
 #include "Camera.h"
 #include "Common.h"
-#include "Primitive.h"
 #include "SceneObject.h"
 
 #include <atomic>
@@ -17,7 +16,7 @@ class Renderer
 public:
     static constexpr int SamplePerPixel = 4;
 
-    Renderer() = default;
+    Renderer();
     ~Renderer();
 
     Renderer(const Renderer&) = delete;
@@ -31,15 +30,14 @@ private:
     Color RenderPixel(int x, int y);
     Color RenderSubPixel(float x, float y);
 
-    SceneObject* AddSceneObject(const Vector3f& position, const Vector3f& euler, float scale);
+    std::shared_ptr<SceneObject> AddSceneObject(const Vector3f& position, const Vector3f& euler, float scale);
 
     std::string mTitle = "OfflineRenderer";
     int mViewportWidth = 800;
     int mViewportHeight = 600;
 
     Camera mCamera;
-    std::vector<std::unique_ptr<SceneObject>> mSceneObjects;
-    std::vector<std::unique_ptr<Primitive>> mPrimitives;
+    std::vector<std::shared_ptr<SceneObject>> mSceneObjects;
 
     std::vector<uint32_t> mBuffer;
     std::atomic<int> mCurrentPixelIndex{0};
