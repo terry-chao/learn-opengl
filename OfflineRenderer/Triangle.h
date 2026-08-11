@@ -5,7 +5,7 @@
 class Triangle : public Primitive
 {
 public:
-    Triangle(const Vector3f& v0, const Vector3f& v1, const Vector3f& v2);
+    Triangle(SceneObject* pSceneObject, const Vector3f& v0, const Vector3f& v1, const Vector3f& v2);
 
     bool Intersect(const Ray& ray, Intersection& isect) const override;
 

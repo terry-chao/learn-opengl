@@ -1,18 +1,20 @@
-#include "Sphere.h"
+﻿#include "Sphere.h"
 
 #include <cmath>
 
-Sphere::Sphere(const Vector3f& center, float radius)
-    : mCenter(center)
+Sphere::Sphere(SceneObject* pSceneObject, float radius)
+    : Primitive(pSceneObject)
     , mRadius(radius)
 {
 }
 
 bool Sphere::Intersect(const Ray& ray, Intersection& isect) const
 {
-    const Vector3f oc = ray.origin - mCenter;
-    const float a = glm::dot(ray.direction, ray.direction);
-    const float b = 2.0f * glm::dot(oc, ray.direction);
+    const Ray localRay = TransformRayToObject(ray);
+
+    const Vector3f oc = localRay.origin;
+    const float a = glm::dot(localRay.direction, localRay.direction);
+    const float b = 2.0f * glm::dot(oc, localRay.direction);
     const float c = glm::dot(oc, oc) - mRadius * mRadius;
     const float discriminant = b * b - 4.0f * a * c;
     if (discriminant < 0.0f)
@@ -32,7 +34,8 @@ bool Sphere::Intersect(const Ray& ray, Intersection& isect) const
     }
 
     isect.t = t;
-    isect.position = ray.origin + t * ray.direction;
-    isect.normal = glm::normalize(isect.position - mCenter);
+    isect.position = localRay.origin + t * localRay.direction;
+    isect.normal = glm::normalize(isect.position);
+    TransformIntersectionToWorld(ray, isect);
     return true;
 }

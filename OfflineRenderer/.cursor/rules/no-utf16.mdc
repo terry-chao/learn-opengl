@@ -1,0 +1,14 @@
+---
+description: 源码与文本文件禁止使用 UTF-16 编码
+alwaysApply: true
+---
+
+# 禁止 UTF-16 编码
+
+创建或修改文本文件（.h / .cpp / .hpp / .c / .md / .json / .vcxproj 等）时：
+
+- **必须**使用 **UTF-8**（优先无 BOM）
+- **禁止**使用 UTF-16（LE/BE，无论有无 BOM）
+- 不要用会默认写出 UTF-16 的方式写文件（例如 PowerShell 的部分 Set-Content / Out-File 默认行为）
+
+若编辑器报「文档格式不受支持」或「包含二进制字符」，先检查文件是否为 UTF-16，并转换为 UTF-8 后再继续编辑。

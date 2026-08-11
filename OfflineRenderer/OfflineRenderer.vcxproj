@@ -162,7 +162,9 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Disk.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="vendor\minifb\src\MiniFB_common.c" />
@@ -177,6 +179,7 @@
     <ClInclude Include="Disk.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="vendor\minifb\include\MiniFB.h" />

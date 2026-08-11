@@ -1,8 +1,9 @@
-﻿#pragma once
+#pragma once
 
 #include "Camera.h"
 #include "Common.h"
-#include "Disk.h"
+#include "Primitive.h"
+#include "SceneObject.h"
 
 #include <atomic>
 #include <cstdint>
@@ -16,7 +17,7 @@ class Renderer
 public:
     static constexpr int SamplePerPixel = 4;
 
-    Renderer();
+    Renderer() = default;
     ~Renderer();
 
     Renderer(const Renderer&) = delete;
@@ -30,12 +31,15 @@ private:
     Color RenderPixel(int x, int y);
     Color RenderSubPixel(float x, float y);
 
+    SceneObject* AddSceneObject(const Vector3f& position, const Vector3f& euler, float scale);
+
     std::string mTitle = "OfflineRenderer";
     int mViewportWidth = 800;
     int mViewportHeight = 600;
 
     Camera mCamera;
-    std::unique_ptr<Primitive> mDisk;
+    std::vector<std::unique_ptr<SceneObject>> mSceneObjects;
+    std::vector<std::unique_ptr<Primitive>> mPrimitives;
 
     std::vector<uint32_t> mBuffer;
     std::atomic<int> mCurrentPixelIndex{0};

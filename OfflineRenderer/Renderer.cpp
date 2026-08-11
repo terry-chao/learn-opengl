@@ -1,21 +1,18 @@
 #include "Renderer.h"
 
+#include "Disk.h"
+#include "Sphere.h"
+#include "Triangle.h"
+
 #include <MiniFB.h>
 
 #include <glm/gtc/constants.hpp>
-#include <glm/gtc/random.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/random.hpp>
 
 #include <cmath>
 #include <iostream>
-
-Renderer::Renderer()
-{
-    mDisk = std::make_unique<Disk>(
-        Vector3f(0.0f, 0.0f, 3.0f),
-        Vector3f(0.0f, 0.0f, -1.0f),
-        1.0f);
-}
+#include <limits>
 
 Renderer::~Renderer()
 {
@@ -24,6 +21,12 @@ Renderer::~Renderer()
     {
         mWorker.join();
     }
+}
+
+SceneObject* Renderer::AddSceneObject(const Vector3f& position, const Vector3f& euler, float scale)
+{
+    mSceneObjects.push_back(std::make_unique<SceneObject>(position, euler, scale));
+    return mSceneObjects.back().get();
 }
 
 Color Renderer::RenderPixel(int x, int y)
@@ -43,14 +46,27 @@ Color Renderer::RenderPixel(int x, int y)
 Color Renderer::RenderSubPixel(float x, float y)
 {
     Ray ray = mCamera.GetRay(x, y);
-    Intersection isect;
-    Color color(0, 0, 0);
+    Intersection closest;
+    closest.t = std::numeric_limits<float>::infinity();
+    bool hit = false;
 
-    if (mDisk->Intersect(ray, isect))
+    for (const auto& primitive : mPrimitives)
     {
-        color = isect.normal * 0.5f + 0.5f; // 将法线向量映射到[0, 1]范围内，作为颜色输出
+        Intersection isect;
+        if (primitive->Intersect(ray, isect) && isect.t < closest.t)
+        {
+            closest = isect;
+            hit = true;
+        }
     }
-    return color;
+
+    if (!hit)
+    {
+        return Color(0, 0, 0);
+    }
+
+    // 将法线向量映射到[0, 1]范围内，作为颜色输出
+    return closest.normal * 0.5f + 0.5f;
 }
 
 void Renderer::RunRenderThread()
@@ -78,6 +94,44 @@ void Renderer::RunRenderThread()
 
 void Renderer::Run()
 {
+    mSceneObjects.clear();
+    mPrimitives.clear();
+
+    const Vector3f noRotation(0.0f);
+
+    SceneObject* floor = AddSceneObject(Vector3f(0.0f, -1.2f, 4.0f), noRotation, 1.0f);
+    mPrimitives.push_back(std::make_unique<Disk>(floor, Vector3f(0.0f, 1.0f, 0.0f), 2.5f));
+
+    SceneObject* sphereA = AddSceneObject(Vector3f(-1.2f, 0.0f, 4.0f), noRotation, 1.0f);
+    mPrimitives.push_back(std::make_unique<Sphere>(sphereA, 0.7f));
+
+    SceneObject* sphereB = AddSceneObject(Vector3f(1.2f, 0.0f, 4.5f), noRotation, 1.0f);
+    mPrimitives.push_back(std::make_unique<Sphere>(sphereB, 0.8f));
+
+    SceneObject* sphereC = AddSceneObject(Vector3f(0.0f, 1.0f, 5.0f), noRotation, 1.0f);
+    mPrimitives.push_back(std::make_unique<Sphere>(sphereC, 0.5f));
+
+    SceneObject* triA = AddSceneObject(Vector3f(0.0f, 0.0f, 0.0f), noRotation, 1.0f);
+    mPrimitives.push_back(std::make_unique<Triangle>(
+        triA,
+        Vector3f(-0.5f, -1.0f, 3.2f),
+        Vector3f(0.5f, -1.0f, 3.2f),
+        Vector3f(0.0f, 0.2f, 3.0f)));
+
+    SceneObject* triB = AddSceneObject(Vector3f(0.0f, 0.0f, 0.0f), noRotation, 1.0f);
+    mPrimitives.push_back(std::make_unique<Triangle>(
+        triB,
+        Vector3f(-2.0f, -1.0f, 5.0f),
+        Vector3f(-1.0f, -1.0f, 5.5f),
+        Vector3f(-1.5f, 0.5f, 5.0f)));
+
+    SceneObject* triC = AddSceneObject(Vector3f(0.0f, 0.0f, 0.0f), noRotation, 1.0f);
+    mPrimitives.push_back(std::make_unique<Triangle>(
+        triC,
+        Vector3f(1.0f, -1.0f, 3.5f),
+        Vector3f(2.0f, -1.0f, 4.0f),
+        Vector3f(1.5f, 0.8f, 3.8f)));
+
     mCamera.Initialize(
         Vector3f(0.0f, 0.0f, 0.0f),
         Vector3f(0.0f, 0.0f, 1.0f),

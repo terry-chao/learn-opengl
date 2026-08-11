@@ -39,7 +39,13 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Primitive.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="Renderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneObject.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
@@ -78,6 +84,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Sphere.h">

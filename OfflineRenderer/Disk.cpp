@@ -2,8 +2,8 @@
 
 #include <cmath>
 
-Disk::Disk(const Vector3f& center, const Vector3f& normal, float radius)
-    : mCenter(center)
+Disk::Disk(SceneObject* pSceneObject, const Vector3f& normal, float radius)
+    : Primitive(pSceneObject)
     , mNormal(glm::normalize(normal))
     , mRadius(radius)
 {
@@ -11,21 +11,22 @@ Disk::Disk(const Vector3f& center, const Vector3f& normal, float radius)
 
 bool Disk::Intersect(const Ray& ray, Intersection& isect) const
 {
-    const float denom = glm::dot(ray.direction, mNormal);
+    const Ray localRay = TransformRayToObject(ray);
+
+    const float denom = glm::dot(localRay.direction, mNormal);
     if (std::abs(denom) < 1e-6f)
     {
         return false;
     }
 
-    const float t = glm::dot(mCenter - ray.origin, mNormal) / denom;
+    const float t = glm::dot(-localRay.origin, mNormal) / denom;
     if (t < 0.0f)
     {
         return false;
     }
 
-    const Vector3f p = ray.origin + t * ray.direction;
-    const Vector3f d = p - mCenter;
-    if (glm::dot(d, d) > mRadius * mRadius)
+    const Vector3f p = localRay.origin + t * localRay.direction;
+    if (glm::dot(p, p) > mRadius * mRadius)
     {
         return false;
     }
@@ -33,5 +34,6 @@ bool Disk::Intersect(const Ray& ray, Intersection& isect) const
     isect.t = t;
     isect.position = p;
     isect.normal = mNormal;
+    TransformIntersectionToWorld(ray, isect);
     return true;
 }
